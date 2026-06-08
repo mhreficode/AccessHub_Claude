@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "accesshub-marketplace",
+  "owner": {
+    "name": "AccessHub Workshop"
+  },
+  "metadata": {
+    "description": "Example marketplace bundled with the AccessHub workshop. It shows how a team can package and share Claude Code assets (commands, skills, subagents) across repositories instead of copy-pasting them.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "accesshub-pack",
+      "source": "./plugins/accesshub-pack",
+      "description": "Reusable review assets for internal developer-platform repositories: API style and security skills, a service-review and a test-generation command, and a security-reviewer subagent.",
+      "version": "0.1.0",
+      "category": "code-review",
+      "keywords": ["accesshub", "review", "security", "api", "developer-platform"]
+    }
+  ]
+}

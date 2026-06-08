@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "accesshub-context": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "./docs",
+        "./specs"
+      ],
+      "env": {}
+    }
+  }
+}

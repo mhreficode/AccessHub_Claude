@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin.json",
+  "name": "accesshub-pack",
+  "version": "0.1.0",
+  "description": "Reusable Claude Code assets for internal developer-platform repositories: API style and security skills, service-review and test-generation commands, and a security-reviewer subagent.",
+  "author": {
+    "name": "AccessHub Workshop"
+  },
+  "keywords": ["accesshub", "review", "security", "api", "developer-platform"]
+}

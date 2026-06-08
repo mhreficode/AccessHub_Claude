@@ -1,0 +1,28 @@
+node_modules/
+dist/
+build/
+coverage/
+
+# SQLite databases
+*.db
+*.db-journal
+prisma/*.db
+prisma/*.db-journal
+
+# Prisma generated client (regenerated via prisma generate)
+.prisma/
+
+# Env
+.env
+.env.local
+*.local
+
+# Logs
+*.log
+.agent/logs/
+
+# Editor
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json

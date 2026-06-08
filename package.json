@@ -1,0 +1,48 @@
+{
+  "name": "accesshub",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "AccessHub: internal developer platform and API catalog. Workshop codebase for advanced Claude Code training.",
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace @accesshub/api & npm run dev --workspace @accesshub/web",
+    "dev:api": "npm run dev --workspace @accesshub/api",
+    "dev:web": "npm run dev --workspace @accesshub/web",
+    "build": "npm run build --workspace @accesshub/api && npm run build --workspace @accesshub/web",
+    "lint": "eslint .",
+    "typecheck": "npm run typecheck --workspace @accesshub/api && npm run typecheck --workspace @accesshub/web",
+    "test": "npm run test:api && npm run test:web",
+    "test:api": "npm run test --workspace @accesshub/api",
+    "test:web": "npm run test --workspace @accesshub/web",
+    "prisma:generate": "prisma generate",
+    "db:push": "prisma db push --skip-generate",
+    "db:reset": "bash scripts/reset-db.sh",
+    "db:seed": "tsx prisma/seed.ts",
+    "seed": "tsx prisma/seed.ts",
+    "reset": "bash scripts/reset-db.sh",
+    "workshop:reset": "bash scripts/reset-db.sh && bash scripts/seed-demo-data.sh",
+    "workshop:validate": "bash scripts/validate-workshop-state.sh"
+  },
+  "devDependencies": {
+    "@eslint/js": "^8.57.0",
+    "@types/node": "^20.11.30",
+    "eslint": "^8.57.0",
+    "prettier": "^3.2.5",
+    "prisma": "^5.12.0",
+    "tsx": "^4.7.1",
+    "typescript": "^5.4.3",
+    "typescript-eslint": "^7.4.0"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.12.0"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,0 +1,110 @@
+// AccessHub database schema (Prisma + SQLite).
+//
+// Workshop note: the access-expiration feature is intentionally NOT modelled yet.
+// Participants are expected to add the fields marked TODO(workshop) below as part
+// of the "Expiring Service Access" feature. See specs/access-expiration/.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  role      String // developer | service_owner | platform_admin
+  teamId    String?
+  team      Team?    @relation(fields: [teamId], references: [id])
+  createdAt DateTime @default(now())
+
+  accessRequests   AccessRequest[] @relation("requester")
+  reviewedRequests AccessRequest[] @relation("reviewer")
+  apiKeys          ApiKey[]
+}
+
+model Team {
+  id       String    @id @default(cuid())
+  name     String
+  slug     String    @unique
+  services Service[]
+  users    User[]
+}
+
+model Service {
+  id           String   @id @default(cuid())
+  name         String
+  slug         String   @unique
+  description  String
+  status       String // active | deprecated | maintenance
+  baseUrl      String
+  docsMarkdown String
+  ownerTeamId  String
+  ownerTeam    Team     @relation(fields: [ownerTeamId], references: [id])
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  accessRequests AccessRequest[]
+  apiKeys        ApiKey[]
+}
+
+model AccessRequest {
+  id              String    @id @default(cuid())
+  serviceId       String
+  service         Service   @relation(fields: [serviceId], references: [id])
+  requesterUserId String
+  requester       User      @relation("requester", fields: [requesterUserId], references: [id])
+  reason          String
+  status          String // pending | approved | rejected
+  reviewedById    String?
+  reviewer        User?     @relation("reviewer", fields: [reviewedById], references: [id])
+  reviewedAt      DateTime?
+  rejectionReason String?
+  createdAt       DateTime  @default(now())
+
+  // TODO(workshop): add expiration support for the "Expiring Service Access" feature.
+  // expiresAt    DateTime?
+  // extendedAt   DateTime?
+  // extendedById String?
+}
+
+model ApiKey {
+  id         String    @id @default(cuid())
+  serviceId  String
+  service    Service   @relation(fields: [serviceId], references: [id])
+  userId     String
+  user       User      @relation(fields: [userId], references: [id])
+  keyPrefix  String
+  keyHash    String
+  label      String
+  status     String // active | revoked
+  createdAt  DateTime  @default(now())
+  revokedAt  DateTime?
+  lastUsedAt DateTime?
+}
+
+model UsageEvent {
+  id         String   @id @default(cuid())
+  serviceId  String
+  apiKeyId   String?
+  endpoint   String
+  statusCode Int
+  latencyMs  Int
+  success    Boolean
+  timestamp  DateTime @default(now())
+}
+
+model AuditLog {
+  id          String   @id @default(cuid())
+  actorUserId String?
+  action      String
+  entityType  String
+  entityId    String
+  message     String
+  metadata    String? // JSON-encoded string (SQLite has no native JSON type)
+  createdAt   DateTime @default(now())
+}
